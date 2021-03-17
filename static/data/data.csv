@@ -1,4 +1,4 @@
-,Unnamed: 0,Country,Happiness Rank,Happiness Score,Wealth,Family,Health,Freedom,Trust,Generosity,Year
+,Unnamed: 0,Country,HappinessRank,HappinessScore,Wealth,Family,Health,Freedom,Trust,Generosity,Year
 0,0,Switzerland,1,7.5870000000000015,1.39651,1.34951,0.94143,0.66557,0.41978,0.29678000000000004,2015
 1,1,Iceland,2,7.561,1.30232,1.40223,0.94784,0.6287699999999999,0.14145,0.4363,2015
 2,2,Denmark,3,7.527,1.32548,1.36058,0.87464,0.6493800000000001,0.48357,0.34139,2015
