@@ -12,8 +12,13 @@ var myMap = L.map("map", {
     id: "mapbox/streets-v11",
     accessToken: API_KEY
   }).addTo(myMap);
+ 
+  
+
+  var geoYear = "2016";
+ 
   // Load in geojson data
-  var geoData = "static/data/geojson/2015countries.geojson";
+  var geoData = "static/data/geojson/" + geoYear + "countries.geojson";
   var geojson;
   // Grab data with d3
   d3.json(geoData, function(data) {
@@ -61,4 +66,37 @@ var myMap = L.map("map", {
     };
     // Adding legend to the map
     legend.addTo(myMap);
+
+    //creating the slider
+
+    // Simple
+var data = [0, 0.005, 0.01, 0.015, 0.02, 0.025];
+
+console.log(data)
+
+var sliderSimple = d3
+  .sliderBottom()
+  .min(d3.min(data))
+  .max(d3.max(data))
+  .width(300)
+  .tickFormat(d3.format('.2%'))
+  .ticks(5)
+  .default(0.015)
+  .on('onchange', val => {
+    d3.select('p#value-simple').text(d3.format('.2%')(val));
+  });
+
+var gSimple = d3
+  .select('div#slider-simple')
+  .append('svg')
+  .attr('width', 500)
+  .attr('height', 100)
+  .append('g')
+  .attr('transform', 'translate(30,30)');
+
+gSimple.call(sliderSimple);
+
+d3.select('p#value-simple').text(d3.format('.2%')(sliderSimple.value()));
+  
+
   });
