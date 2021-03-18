@@ -1,10 +1,10 @@
 const svgWidth = 660;
-const svgHeight = 460;
+const svgHeight = 600;
 
 const margin = {
     top: 20,
     right: 40,
-    bottom: 80,
+    bottom: 180,
     left: 100
 };
 
@@ -24,8 +24,8 @@ const chartGroup = svg.append("g")
                     .attr("transform", `translate(${margin.left}, ${margin.top})`)
 
 // Initial params
-var chosenXaxis = "HappinessScore";
-var chosenYaxis = "Wealth";
+var chosenYaxis = "Happiness Score";
+var chosenXaxis = "Wealth";
 
 // function used for updating xAxis const upon click on axis label
 function renderXAxes(newXScale, xAxis) {
@@ -72,8 +72,8 @@ function renderTexts(txtGroup, newXScale, newYScale, chosenXAxis, chosenYAxis) {
 function xScale(HappinessData, chosenXaxis) {
     // create scales
     const xLinearScale = d3.scaleLinear()
-      .domain([d3.min(HappinessData, d => d[chosenXaxis]*0.8),
-        d3.max(HappinessData, d => d[chosenXaxis]*1.2)
+      .domain([d3.min(HappinessData, d => d[chosenXaxis]-.2),
+        d3.max(HappinessData, d => d[chosenXaxis]+.2)
       ])
       .range([0, width]);
     return xLinearScale;
@@ -81,7 +81,7 @@ function xScale(HappinessData, chosenXaxis) {
 function yScale(HappinessData, chosenYaxis) {
     // create scales
     const yLinearScale = d3.scaleLinear()
-      .domain([d3.min(HappinessData, d=>d[chosenYaxis])*0.8, d3.max(HappinessData, d=>d[chosenYaxis])*1.2 ])
+      .domain([0, 8])
       .range([height, 0]);
     return yLinearScale;
 }
@@ -114,52 +114,34 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup){
   if (chosenYaxis === "HappinessScore"){
     yLabel = "Happiness Score";
   }
-  else if (chosenYaxis === "Wealth"){
-    yLabel = "GDP per Capita";
-  }
-  else if (chosenYaxis === "Family"){
-    yLabel = "Family";
-  }
-  else if (chosenYaxis === "Health"){
-    yLabel = "Health (Life Expectancy";
-  }
-  else if (chosenYaxis === "Freedom"){
-    yLabel = "Freedom";
-  }
-  else if (chosenYaxis === "Trust"){
-    yLabel = "Trust (Perception Of Government Corruption)";
-  }
-  else{
-    yLabel = "Generosity";
-  }
-  const toolTip = d3.tip()
-                    .attr("class", "d3-tip")
-                    .offset([80, -60])
-                    .html(function(d){
-                      return(`${d.country}<br>${xLabel}${d[chosenXaxis]}<br>${yLabel}${d[chosenYaxis]}`)
-                      })
+  // const toolTip = d3.tip()
+  //                   .attr("class", "d3-tip")
+  //                   .offset([80, -60])
+  //                   .html(function(d){
+  //                     return(`${d.country}<br>${xLabel}${d[chosenXaxis]}<br>${yLabel}${d[chosenYaxis]}`)
+  //                     })
   
-  circlesGroup.call(toolTip);
-  circlesGroup.on("mouseover", function(data){
-    toolTip.show(data, this);
-    d3.select(this).style("stroke", "black");
+  // circlesGroup.call(toolTip);
+  // circlesGroup.on("mouseover", function(data){
+  //   toolTip.show(data, this);
+  //   d3.select(this).style("stroke", "black");
     
-  })
-  circlesGroup.on("mouseout", function(data, index){
-    toolTip.hide(data, this)
-    d3.select(this).style("stroke", "white");
-  })
+  // })
+  // circlesGroup.on("mouseout", function(data, index){
+  //   toolTip.hide(data, this)
+  //   d3.select(this).style("stroke", "white");
+  // })
   return circlesGroup;
 }
 
 // Retrieve data from the CSV file and execute everything below
-(async function(){
-    const HappinessData = await d3.csv('data/clean/Clean2020.csv');
 
+d3.csv('static/data/clean/2020.csv',function(HappinessData){
+    console.log(HappinessData)
     // parse data to interger from string
     HappinessData.forEach(function(data){
         data.HappinessScore = +data.HappinessScore;
-		data.Wealth = +data.Wealth;
+		    data.Wealth = +data.Wealth;
         data.Health = +data.Health;
         data.Family = +data.Family;
         data.Freedom = +data.Freedom;
@@ -215,60 +197,47 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup){
     const ylabelsGroup = chartGroup.append("g")
                                 .attr("transform", `translate(${0-margin.left/4}, ${height/2})`);
 
-    const x_HappinessLabel = xlabelsGroup.append("text")
-                                .attr("x", 0)
-                                .attr("y", 0)
-                                .attr("value", "HappinessScore") // value to grab for event listener
-                                .classed("active", true)
-                                .classed("aText", true)
-                                .text("Happiness Score");
-
+    
     const x_WealthLabel = xlabelsGroup.append("text")
-                                .attr("x", 0)
-                                .attr("y", 20)
+                                .attr("x", -150)
+                                .attr("y", 10)
                                 .attr("value", "Wealth") // value to grab for event listener
-                                .classed("inactive", true)
-                                .classed("aText", true)
+                                .attr("class", "active aText")
                                 .text("GDP per Capita");
 
     const x_FamilyLabel = xlabelsGroup.append("text")
-                                .attr("x", 0)
-                                .attr("y", 40)
+                                .attr("x", -150)
+                                .attr("y", 30)
                                 .attr("value", "Family") // value to grab for event listener
-                                .classed("inactive", true)
-                                .classed("aText", true)
+                                .attr('class','inactive aText')
                                 .text("Family");
 
-	const x_HealthLabel = xlabelsGroup.append("text")
-                                .attr("x", 0)
-                                .attr("y", 40)
+	  const x_HealthLabel = xlabelsGroup.append("text")
+                                .attr("x", -150)
+                                .attr("y", 50)
                                 .attr("value", "Health") // value to grab for event listener
-                                .classed("inactive", true)
-                                .classed("aText", true)
+                                .attr('class','inactive aText')
                                 .text("Health");
 
-	const x_FreedomLabel = xlabelsGroup.append("text")
+	  const x_FreedomLabel = xlabelsGroup.append("text")
                                 .attr("x", 0)
-                                .attr("y", 40)
+                                .attr("y", 10)
                                 .attr("value", "Freedom") // value to grab for event listener
-                                .classed("inactive", true)
-                                .classed("aText", true)
+                                .attr('class','inactive aText')
                                 .text("Freedom");
 
-	const x_TrustLabel = xlabelsGroup.append("text")
+	  const x_TrustLabel = xlabelsGroup.append("text")
                                 .attr("x", 0)
-                                .attr("y", 40)
+                                .attr("y", 30)
                                 .attr("value", "Trust") // value to grab for event listener
-                                .classed("inactive", true)
-                                .classed("aText", true)
+                                .attr('class','inactive aText')
                                 .text("Perception of Government Corruption");
     
-	const x_GenerosityLabel = xlabelsGroup.append("text")
+	  const x_GenerosityLabel = xlabelsGroup.append("text")
                                 .attr("x", 0)
-                                .attr("y", 40)
+                                .attr("y", 50)
                                 .attr("value", "Generosity") // value to grab for event listener
-                                .classed("inactive", true)
-                                .classed("aText", true)
+                                .attr('class','inactive aText')
                                 .text("Generosity");
 
    const y_HappinessLabel = ylabelsGroup.append("text")
@@ -277,72 +246,13 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup){
                                 .attr("transform", "rotate(-90)")
                                 .attr("dy", "1em")
                                 .attr("value", "HappinessScore")
-                                .classed("active", true)
-                                .classed("aText", true)
+                                .attr('class','aText')
                                 .text("Happiness Score");
     
-    const y_WealthLabel = ylabelsGroup.append("text")
-                                .attr("y", 0 - 40)
-                                .attr("x", 0)
-                                .attr("transform", "rotate(-90)")
-                                .attr("dy", "1em")
-                                .attr("value", "Wealth")
-                                .classed("inactive", true)
-                                .classed("aText", true)
-                                .text("GDP Per Capita");
-                                
-    const y_FamilyLabel = ylabelsGroup.append("text")
-                                .attr("y", 0 - 60)
-                                .attr("x", 0)
-                                .attr("transform", "rotate(-90)")
-                                .attr("dy", "1em")
-                                .attr("value", "Family")
-                                .classed("inactive", true)
-                                .classed("aText", true)
-                                .text("Family");
-
-	const y_HealthLabel = ylabelsGroup.append("text")
-                                .attr("y", 0 - 60)
-                                .attr("x", 0)
-                                .attr("transform", "rotate(-90)")
-                                .attr("dy", "1em")
-                                .attr("value", "Health")
-                                .classed("inactive", true)
-                                .classed("aText", true)
-                                .text("Health (Life Expectancy)");
-	
-	const y_FreedomLabel = ylabelsGroup.append("text")
-                                .attr("y", 0 - 60)
-                                .attr("x", 0)
-                                .attr("transform", "rotate(-90)")
-                                .attr("dy", "1em")
-                                .attr("value", "Freedom)
-                                .classed("inactive", true)
-                                .classed("aText", true)
-                                .text("Freedom");
-
-	const y_TrustLabel = ylabelsGroup.append("text")
-                                .attr("y", 0 - 60)
-                                .attr("x", 0)
-                                .attr("transform", "rotate(-90)")
-                                .attr("dy", "1em")
-                                .attr("value", "Health")
-                                .classed("inactive", true)
-                                .classed("aText", true)
-                                .text("Perception of Government Corruption");
-
-	const y_GenerosityLabel = ylabelsGroup.append("text")
-                                .attr("y", 0 - 60)
-                                .attr("x", 0)
-                                .attr("transform", "rotate(-90)")
-                                .attr("dy", "1em")
-                                .attr("value", "Generosity")
-                                .classed("inactive", true)
-                                .classed("aText", true)
-                                .text("Generosity");
+    
 
      // updateToolTip function after csv import
-     circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup);
+    //  circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup);
 
     // x axis labels event listener
     xlabelsGroup.selectAll("text")
@@ -370,169 +280,96 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup){
             txtGroup = renderTexts(txtGroup, xLinearScale, yLinearScale, chosenXaxis, chosenYaxis);
 
             // changes classes to change bold text
-            if (chosenXaxis === "Happiness") {
-                x_HappinessLabel
-                    .classed("active", true)
-                    .classed("inactive", false);
+            if (chosenXaxis === "Wealth"){
                 x_WealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                  .attr('class','active aText');
                 x_FamilyLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_HealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_FreedomLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_TrustLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_GenerosityLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                  .attr('class','inactive aText');
+				        x_HealthLabel
+                  .attr('class','inactive aText');
+				        x_FreedomLabel
+                  .attr('class','inactive aText');
+				        x_TrustLabel
+                  .attr('class','inactive aText');
+				        x_GenerosityLabel
+                  .attr('class','inactive aText');
             }
-            else if (chosenXaxis === "Wealth"){
-                x_HappinessLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+			      else if (chosenXaxis === "Family"){
+                
                 x_WealthLabel
-                    .classed("active", true)
-                    .classed("inactive", false);
+                .attr('class','inactive aText');
                 x_FamilyLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_HealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_FreedomLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_TrustLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_GenerosityLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                .attr('class','active aText');
+				        x_HealthLabel
+                .attr('class','inactive aText');
+			        	x_FreedomLabel
+                .attr('class','inactive aText');
+				        x_TrustLabel
+                .attr('class','inactive aText');
+				        x_GenerosityLabel
+                .attr('class','inactive aText');
             }
-			else if (chosenXaxis === "Family"){
-                x_HappinessLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+		        else if (chosenXaxis === "Health"){
                 x_WealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                .attr('class','inactive aText');
                 x_FamilyLabel
-                    .classed("active", true)
-                    .classed("inactive", false);
-				x_HealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_FreedomLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_TrustLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_GenerosityLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                .attr('class','inactive aText');
+				        x_HealthLabel
+                .attr('class','active aText');
+				        x_FreedomLabel
+                .attr('class','inactive aText');
+			        	x_TrustLabel
+                .attr('class','inactive aText');
+			        	x_GenerosityLabel
+                .attr('class','inactive aText');
             }
-			else if (chosenXaxis === "Health"){
-                x_HappinessLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+			      else if (chosenXaxis === "Freedom"){
+                
                 x_WealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                .attr('class','inactive aText');
                 x_FamilyLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_HealthLabel
-                    .classed("active", true)
-                    .classed("inactive", false);
-				x_FreedomLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_TrustLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_GenerosityLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                .attr('class','inactive aText');
+				        x_HealthLabel
+                .attr('class','inactive aText');
+				        x_FreedomLabel
+                .attr('class','active aText');
+				        x_TrustLabel
+                .attr('class','inactive aText');
+				        x_GenerosityLabel
+                .attr('class','inactive aText');
             }
-			else if (chosenXaxis === "Freedom"){
-                x_HappinessLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+			      else if (chosenXaxis === "Trust"){
+                
                 x_WealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                .attr('class','inactive aText');
                 x_FamilyLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_HealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_FreedomLabel
-                    .classed("active", true)
-                    .classed("inactive", false);
-				x_TrustLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_GenerosityLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                .attr('class','inactive aText');
+				        x_HealthLabel
+                .attr('class','inactive aText');
+			        	x_FreedomLabel
+                .attr('class','inactive aText');
+			        	x_TrustLabel
+                .attr('class','active aText');
+			        	x_GenerosityLabel
+                .attr('class','inactive aText');
             }
-			else if (chosenXaxis === "Trust"){
-                x_HappinessLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-                x_WealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+            else {
+              x_WealthLabel
+                .attr('class','inactive aText');
                 x_FamilyLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_HealthLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_FreedomLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-				x_TrustLabel
-                    .classed("active", true)
-                    .classed("inactive", false);
-				x_GenerosityLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
+                .attr('class','inactive aText');
+				        x_HealthLabel
+                .attr('class','inactive aText');
+			        	x_FreedomLabel
+                .attr('class','inactive aText');
+			        	x_TrustLabel
+                .attr('class','inactive aText');
+			        	x_GenerosityLabel
+                .attr('class','active aText');
+			       
             }
-            else{
-			x_HappinessLabel
-				.classed("active", false)
-				.classed("inactive", true);
-			x_WealthLabel
-				.classed("active", false)
-				.classed("inactive", true);
-			x_FamilyLabel
-				.classed("active", false)
-				.classed("inactive", true);
-			x_HealthLabel
-				.classed("active", false)
-				.classed("inactive", true);
-			x_FreedomLabel
-				.classed("active", false)
-				.classed("inactive", true);
-			x_TrustLabel
-				.classed("active", false)
-				.classed("inactive", true);
-			x_GenerosityLabel
-				.classed("active", true)
-				.classed("inactive", false);
-		}
           // update tooltip with new info after changing x-axis 
-          circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup); 
+          // circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup); 
       }})
 // y axis labels event listener
 ylabelsGroup.selectAll("text")
@@ -722,7 +559,7 @@ if (value !== chosenYaxis) {
 		.classed("inactive", false);
 }
      // update tooltip with new info after changing y-axis 
-     circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup); 
+    //  circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup); 
   }})
-
-})()
+})
+// })()

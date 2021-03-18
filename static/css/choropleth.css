@@ -3,10 +3,11 @@ body {
   margin: 0;
 }
 
+
 #map,
 body,
 html {
-  height: 100%;
+  height: calc(100vh - 45px);
 }
 
 .leaflet-popup-content {
