@@ -79,11 +79,11 @@ var sliderSimple = d3
   .min(d3.min(data))
   .max(d3.max(data))
   .width(300)
-  .tickFormat(d3.format('.2%'))
+  .tickFormat(d3.format('2'))
   .ticks(5)
-  .default(0.015)
+  .default(2015)
   .on('onchange', val => {
-    d3.select('p#value-simple').text(d3.format('.2%')(val));
+    d3.select('p#value-simple').text(d3.format('2')(val));
   });
 
 var gSimple = d3
@@ -96,7 +96,7 @@ var gSimple = d3
 
 gSimple.call(sliderSimple);
 
-d3.select('p#value-simple').text(d3.format('.2%')(sliderSimple.value()));
+d3.select('p#value-simple').text(d3.format('2')(sliderSimple.value()));
   
 
   });
