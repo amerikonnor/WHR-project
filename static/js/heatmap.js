@@ -1,14 +1,14 @@
 // Creating map object
-
+  //defaultUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
+  //noLabelsUrl = 'https://api.mapbox.com/styles/v1/amerikonnor/ckmhrn4m08unc17rx4a51422c.html?fresh=true&title=copy&access_token={accessToken}'
   // Adding tile layer
-  var streetMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-    tileSize: 512,
-    maxZoom: 18,
-    zoomOffset: -1,
-    id: "mapbox/streets-v11",
-    accessToken: API_KEY
-  });
+  var streetMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+  maxZoom: 18,
+  id: "streets-v11",
+  accessToken: API_KEY
+});
+
   // Load in geojson data
   var geoData = "static/data/geojson/2015countries.geojson";
   var happinessChoro;
@@ -39,7 +39,8 @@
     });
 
     
-    
+    //creating another choro layer for the freedom impact score!
+    //I want to make a loop that just creates them all!
     freedomChoro = L.choropleth(data, {
       // Define what  property in the features to use
       valueProperty: "Freedom",
@@ -57,18 +58,28 @@
       },
       // Binding a pop-up to each layer
       onEachFeature: function(feature, layer) {
+        if (typeof feature.properties["Freedom"] !== 'undefined'){
         layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Freedom Impact:<br>" +
           feature.properties["Freedom"]);
+        }
+        else {
+          layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Freedom Impact:<br>" +
+          'Not Measured');
+        }
       }
     });
 
+    //adding the choropleths to the basemap layer for the control
+    //this will make it so that only one can be displayed at a time
     var baseMaps = {
       "Happiness Score" : happinessChoro,
       "Freedom Impact" : freedomChoro
     };
 
+    //need an empty set for the layers option of L.map
     var overlayMaps = {};
 
+    // make the map
     var myMap = L.map("map", {
       center: [40, 0],
       zoom: 3,
@@ -77,57 +88,44 @@
 
     
 
-    //adapted from https://stackoverflow.com/questions/44322326/how-to-get-selected-layers-in-control-layers
-    // Add method to layer control class
-    // L.Control.Layers.include({
-    //   getActive: function () {
+    
 
-    //       // Create array for holding active layers
-    //       var active = [];
-
-    //       // Iterate all layers in control
-    //       this._layers.forEach(function (obj) {
-
-    //           // Check if it's an overlay and added to the map
-    //           if (this._map.hasLayer(obj.layer)) {
-
-    //               // Push layer to active array
-    //               active.push(obj.layer);
-    //           }
-    //       });
-
-    //       // Return array
-    //       return active;
-    //   }
-    // });
-
-    var control = L.control.layers(baseMaps,overlayMaps,{
+    L.control.layers(baseMaps,overlayMaps,{
       collasped: false
     }).addTo(myMap);
 
-    function onClick(layer){
+    //function that removes the legend and creates a new one
+    function onChange(layer){
       myMap.removeControl(legend);
       makeLegend(layer)
     }
-    myMap.on('baselayerchange', e => onClick(e.layer));
 
-    // Set up the legend
+    //call the change function whenever the base layer changes
+    myMap.on('baselayerchange', e => onChange(e.layer));
+
+    // initialize the legend array
     var legend = L.control({ position: "bottomright" });
+
+    //function that makes the legend
     function makeLegend(layer){
 
+      //save the passed in active layer
       var activeChoro = layer;
+
+      //get the active layers title
       var layerTitle = Object.keys(baseMaps).find(key => baseMaps[key] === activeChoro)
       
+      //set up the legend
       legend.onAdd = function() {
         var div = L.DomUtil.create("div", "info legend");
         var limits = activeChoro.options.limits;
         var colors = activeChoro.options.colors;
         var labels = [];
         // Add min & max
-        var legendInfo = `<h1>${layerTitle}</h1>` +
+        var legendInfo = `<h3>${layerTitle}</h3>` +
           "<div class=\"labels\">" +
-            "<div class=\"min\">" + limits[0] + "</div>" +
-            "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+            "<div class=\"min\"><h5>" + limits[0].toFixed(2) + "</h5></div>" +
+            "<div class=\"max\"><h5>" + limits[limits.length - 1].toFixed(2) + "</h5></div>" +
           "</div>";
         div.innerHTML = legendInfo;
         limits.forEach(function(limit, index) {
@@ -139,5 +137,7 @@
       // Adding legend to the map
       legend.addTo(myMap);
     }
+
+    //initialize legend
     makeLegend(happinessChoro)
   });
