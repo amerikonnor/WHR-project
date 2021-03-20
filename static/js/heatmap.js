@@ -70,7 +70,7 @@ var myMap = L.map("map", {
     //creating the slider
 
     // Simple
-var data = [0, 0.005, 0.01, 0.015, 0.02, 0.025];
+var data = [2015, 2016, 2017, 2018, 2019, 2020];
 
 console.log(data)
 
