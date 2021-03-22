@@ -9,6 +9,42 @@
   accessToken: API_KEY
 });
 
+function addSlider(map){
+  var sliderSimple = d3
+  .sliderBottom()
+  .min(2015)
+  .max(2020)
+  .step(1)
+  .width(300)
+  .tickFormat(d3.format('2'))
+  .ticks(5)
+  .default(2015)
+  .on('onchange', val => {
+    d3.select('p#value-simple').text(val)
+    updateHeatmap();
+  });
+
+  var sliderBox = L.control({ position: "left" });
+
+  legend.onAdd = function() {
+    var sliderDiv = L.DomUtil.create("div", "info legend");
+
+    var gSimple = d3
+      .select('div#slider-simple')
+      .append('svg')
+      .attr('width', 500)
+      .attr('height', 100)
+      .append('g')
+      .attr('transform', 'translate(30,30)');
+
+    gSimple.call(sliderSimple);
+
+    var legendInfo = "";
+        div.innerHTML = legendInfo;
+  }
+
+}
+
   // Load in geojson data
   var geoData = "static/data/geojson/2015countries.geojson";
   var happinessChoro;
