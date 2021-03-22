@@ -162,7 +162,8 @@ function makeTheGraph(country){
 
 
     var layout1 = {
-        title : `${first_ID.Country} Happiness`
+        title : `${first_ID.Country} Happiness`,
+        showgrid: false
     };
 
     // Create bar chart
@@ -422,6 +423,7 @@ function somethingCool(country){
             yaxis2: {
                 title: 'Impact of Factors',
                 overlaying: 'y',
+                showgrid: false,
                 side: 'right'
             }
         };
