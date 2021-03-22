@@ -2,14 +2,45 @@
   //defaultUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
   //noLabelsUrl = 'https://api.mapbox.com/styles/v1/amerikonnor/ckmhrn4m08unc17rx4a51422c.html?fresh=true&title=copy&access_token={accessToken}'
   // Adding tile layer
+var myMap = L.map("map", {
+  center: [40, 0],
+  zoom: 3,
+});
+function makeTheMap(){
+
+  
   var streetMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
   maxZoom: 18,
   id: "streets-v11",
   accessToken: API_KEY
-});
+  }).addTo(myMap);
 
+  addSlider(myMap);
+  
+  //call the change function whenever the base layer changes
+  // myMap.on('baselayerchange', e => onChange(e.layer));
+};
+  
 function addSlider(map){
+  
+  var sliderBox = L.control({ position: "bottomleft" });
+
+  sliderBox.onAdd = function() {
+    
+    var sliderDiv = L.DomUtil.create("div", "info legend");
+    
+
+    var sliderInfo = '<p id="value-simple"></p><div id="slider-simple"></div>';
+    sliderDiv.innerHTML = sliderInfo;
+  
+      
+   
+    
+    return sliderDiv;
+  }
+  sliderBox.addTo(map);
+
   var sliderSimple = d3
   .sliderBottom()
   .min(2015)
@@ -20,37 +51,65 @@ function addSlider(map){
   .ticks(5)
   .default(2015)
   .on('onchange', val => {
-    d3.select('p#value-simple').text(val)
-    updateHeatmap();
+    d3.select('p#value-simple').text(val);
+    makeChoros();
   });
 
-  var sliderBox = L.control({ position: "left" });
-
-  legend.onAdd = function() {
-    var sliderDiv = L.DomUtil.create("div", "info legend");
-
-    var gSimple = d3
+  var gSimple = d3
       .select('div#slider-simple')
       .append('svg')
-      .attr('width', 500)
+      .attr('width', 350)
       .attr('height', 100)
       .append('g')
       .attr('transform', 'translate(30,30)');
 
     gSimple.call(sliderSimple);
 
-    var legendInfo = "";
-        div.innerHTML = legendInfo;
-  }
-
 }
 
   // Load in geojson data
-  var geoData = "static/data/geojson/2015countries.geojson";
-  var happinessChoro;
-  var freedomChoro;
+
+
   // Grab data with d3
-  d3.json(geoData, function(data) {
+function makeChoros(){
+
+  var sliderItem = d3.select('p#value-simple');
+  var dataset = sliderItem.text();
+
+  switch(dataset){
+    case "2015":
+    var geoYear = "2015"
+    break;
+
+  case "2016":
+    var geoYear = "2016"
+    break;
+
+  case "2017":
+    var geoYear = "2017"
+    break;
+
+  case "2018":
+      var geoYear = "2018"
+      break;
+
+  case "2019":
+    var geoYear = "2019"
+    break;
+
+  case "2019":
+    var geoYear = "2020"
+    break;
+
+  default:
+    var geoYear = "2015"
+    break;
+  }
+
+  var geoData = "static/data/geojson/" + geoYear + "countries.geojson";
+
+  d3.json(geoData,function(data) {
+    
     // Create a new choropleth layer
     happinessChoro = L.choropleth(data, {
       // Define what  property in the features to use
@@ -72,7 +131,7 @@ function addSlider(map){
         layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Happiness Score:<br>" +
           feature.properties["Happiness Score"]);
       }
-    });
+    }).addTo(myMap);
 
     
     //creating another choro layer for the freedom impact score!
@@ -104,40 +163,28 @@ function addSlider(map){
         }
       }
     });
-
-    //adding the choropleths to the basemap layer for the control
-    //this will make it so that only one can be displayed at a time
     var baseMaps = {
       "Happiness Score" : happinessChoro,
       "Freedom Impact" : freedomChoro
     };
-
+  
     //need an empty set for the layers option of L.map
     var overlayMaps = {};
 
-    // make the map
-    var myMap = L.map("map", {
-      center: [40, 0],
-      zoom: 3,
-      layers: [streetMap, happinessChoro]
-    });
-
+    
+    d3.select('div.leaflet-top.leaflet-right').html('');
+    
+  
     
 
-    
-
-    L.control.layers(baseMaps,overlayMaps,{
+    var layerControl = L.control.layers(baseMaps,overlayMaps,{
       collasped: false
-    }).addTo(myMap);
-
-    //function that removes the legend and creates a new one
-    function onChange(layer){
-      myMap.removeControl(legend);
-      makeLegend(layer)
-    }
-
-    //call the change function whenever the base layer changes
-    myMap.on('baselayerchange', e => onChange(e.layer));
+    });
+    layerControl.addTo(myMap);
+    
+    
+  
+    d3.select('div.leaflet-bottom.leaflet-right').html('<div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a></div>');
 
     // initialize the legend array
     var legend = L.control({ position: "bottomright" });
@@ -145,10 +192,10 @@ function addSlider(map){
     //function that makes the legend
     function makeLegend(layer){
 
-      //save the passed in active layer
+    //save the passed in active layer
       var activeChoro = layer;
 
-      //get the active layers title
+    //get the active layers title
       var layerTitle = Object.keys(baseMaps).find(key => baseMaps[key] === activeChoro)
       
       //set up the legend
@@ -157,7 +204,7 @@ function addSlider(map){
         var limits = activeChoro.options.limits;
         var colors = activeChoro.options.colors;
         var labels = [];
-        // Add min & max
+      // Add min & max
         var legendInfo = `<h3>${layerTitle}</h3>` +
           "<div class=\"labels\">" +
             "<div class=\"min\"><h5>" + limits[0].toFixed(2) + "</h5></div>" +
@@ -172,8 +219,22 @@ function addSlider(map){
       };
       // Adding legend to the map
       legend.addTo(myMap);
-    }
+    };
+    makeLegend(happinessChoro);
 
-    //initialize legend
-    makeLegend(happinessChoro)
+    //redraw legend stuff
+    myMap.on('baselayerchange',e=>{
+      d3.select('div.leaflet-bottom.leaflet-right').html('<div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a></div>');
+      makeLegend(e.layer);
+    });
+  
   });
+};
+
+makeTheMap();
+makeChoros();
+
+
+
+
+
