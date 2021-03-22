@@ -1,8 +1,8 @@
 // Create initial function drawing map
-function drawMap(year){
-if (!year ){
-  year = 2015;
-}
+// function drawMap(year){
+// if (!year ){
+//   year = 2015;
+// }
 // Creating map object
 var myMap = L.map("map", {
     center: [40, 0],
@@ -17,55 +17,87 @@ var myMap = L.map("map", {
     id: "mapbox/streets-v11",
     accessToken: API_KEY
   }).addTo(myMap);
+
+  var sliderSimple = d3
+  .sliderBottom()
+  .min(2015)
+  .max(2020)
+  .step(1)
+  .width(300)
+  .tickFormat(d3.format('2'))
+  .ticks(5)
+  .default(2015)
+  .on('onchange', val => {
+    d3.select('p#value-simple').text(val)
+    updateHeatmap();
+  });
+
+var gSimple = d3
+  .select('div#slider-simple')
+  .append('svg')
+  .attr('width', 500)
+  .attr('height', 100)
+  .append('g')
+  .attr('transform', 'translate(30,30)');
+
+gSimple.call(sliderSimple);
+
+d3.select('p#value-simple').text(d3.format('2')(sliderSimple.value()));
  
+// };
   
 // // Call updateHeatmap() when a change takes place
 // d3.selectAll("body").on("onchange", updateHeatmap);
 
 // // This function is called when a slider item is selected
-// function updateHeatmap() {
-//   // Use D3 to select the slider item
-//   var sliderItem = d3.select("p#value-simple");
-//   // Assign the value of the slider item to a variable
-//   var dataset = sliderItem.node().value;
+function updateHeatmap() {
+  // Use D3 to select the slider item
+  var sliderItem = d3.select("p#value-simple");
+ 
+  // Assign the value of the slider item to a variable
+  var dataset = sliderItem.text();
+ 
 
-//   var CHART = d3.selectAll("#map").node();
+  var CHART = d3.selectAll("#map").node();
+
+  
 
 
-// switch(dataset) {
-//   case "2015":
-//     var geoYear = "2015"
-//     break;
+switch(dataset) {
+  case "2015":
+    var geoYear = "2015"
+    break;
 
-//   case "2016":
-//     var geoYear = "2016"
-//     break;
+  case "2016":
+    var geoYear = "2016"
+    break;
 
-//   case "2017":
-//     var geoYear = "2017"
-//     break;
+  case "2017":
+    var geoYear = "2017"
+    break;
 
-//   case "2018":
-//       var geoYear = "2018"
-//       break;
+  case "2018":
+      var geoYear = "2018"
+      break;
 
-//   case "2019":
-//     var geoYear = "2019"
-//     break;
+  case "2019":
+    var geoYear = "2019"
+    break;
 
-//   case "2019":
-//     var geoYear = "2020"
-//     break;
+  case "2019":
+    var geoYear = "2020"
+    break;
 
-//   default:
-//     var geoYear = "2015"
-//     break;
-// }
+  default:
+    var geoYear = "2015"
+    break;
+}
 
-var geoYear = "2016";
+// var geoYear = year;
  
   // Load in geojson data
   var geoData = "static/data/geojson/" + geoYear + "countries.geojson";
+  console.log(geoYear);
   var geojson;
   // Grab data with d3
   d3.json(geoData, function(data) {
@@ -121,42 +153,17 @@ var data = [2015, 2016, 2017, 2018, 2019, 2020];
 
 console.log(data)
 
-var sliderSimple = d3
-  .sliderBottom()
-  .min(d3.min(data))
-  .max(d3.max(data))
-  .width(300)
-  .tickFormat(d3.format('2'))
-  .ticks(5)
-  .default(year)
-  .on('onchange', val => {
-    d3.select('p#value-simple').text(d3.format('2')(val));
-  });
 
-var gSimple = d3
-  .select('div#slider-simple')
-  .append('svg')
-  .attr('width', 500)
-  .attr('height', 100)
-  .append('g')
-  .attr('transform', 'translate(30,30)');
 
-gSimple.call(sliderSimple);
 
-d3.select('p#value-simple').text(d3.format('2')(sliderSimple.value()));
- console.log(sliderSimple.value()); 
 
   });
 };
 
-drawMap();
+// drawMap();
+// updateHeatmap();
 
-d3.selectAll("slider-simple").on("onchange", drawMap(2020));
+d3.selectAll("#slider-simple").on("onchange", updateHeatmap());
 //d3.select('p#value-simple').text(d3.format('2')(sliderSimple.value()));
 
-d3.select('#ariaValueNow')
-  .on('change', function() {
-    alert("This worked!!");
-});
 //});
-//};
