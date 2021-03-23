@@ -1,7 +1,3 @@
-// Creating map object
-  //defaultUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
-  //noLabelsUrl = 'https://api.mapbox.com/styles/v1/amerikonnor/ckmhrn4m08unc17rx4a51422c.html?fresh=true&title=copy&access_token={accessToken}'
-  // Adding tile layer
 var myMap = L.map("map", {
   center: [40, 0],
   zoom: 3,
@@ -18,8 +14,7 @@ function makeTheMap(){
 
   addSlider(myMap);
   
-  //call the change function whenever the base layer changes
-  // myMap.on('baselayerchange', e => onChange(e.layer));
+ 
 };
   
 function addSlider(map){
