@@ -52,7 +52,7 @@ function renderYAxes(newYScale, yAxis) {
 // function used for updating circles group with a transition to
 // new circles
 function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYAxis) {
-
+  console.log(chosenXAxis);
   circlesGroup.transition()
     .duration(1000)
     .attr("cx", d => newXScale(d[chosenXAxis]))
@@ -137,7 +137,8 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup){
 // Retrieve data from the CSV file and execute everything below
 
 d3.csv('static/data/clean/2020.csv',function(HappinessData){
-    console.log(HappinessData)
+  console.log(chosenXaxis);
+    
     // parse data to interger from string
     HappinessData.forEach(function(data){
         data.HappinessScore = +data.HappinessScore;
@@ -148,7 +149,7 @@ d3.csv('static/data/clean/2020.csv',function(HappinessData){
         data.Trust = +data.Trust;
         data.Generosity = +data.Generosity;
     })
-
+    console.log(HappinessData)
     // xLinearScale function after csv import
     let xLinearScale = xScale(HappinessData, chosenXaxis);
 
