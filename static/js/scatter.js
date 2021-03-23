@@ -78,7 +78,7 @@ function xScale(HappinessData, chosenXaxis) {
       .range([0, width]);
     return xLinearScale;
 }
-function yScale(HappinessData, chosenYaxis) {
+function yScale() {
     // create scales
     const yLinearScale = d3.scaleLinear()
       .domain([0, 8])

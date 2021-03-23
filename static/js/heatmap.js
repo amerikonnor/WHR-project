@@ -40,6 +40,7 @@ function addSlider(map){
     return sliderDiv;
   }
   sliderBox.addTo(map);
+  d3.select('p#value-simple').text(2015);
 
   var sliderSimple = d3
   .sliderBottom()
@@ -90,14 +91,14 @@ function makeChoros(){
     break;
 
   case "2018":
-      var geoYear = "2018"
-      break;
+    var geoYear = "2018"
+    break;
 
   case "2019":
     var geoYear = "2019"
     break;
 
-  case "2019":
+  case "2020":
     var geoYear = "2020"
     break;
 
@@ -107,8 +108,10 @@ function makeChoros(){
   }
 
   var geoData = "static/data/geojson/" + geoYear + "countries.geojson";
+  
 
   d3.json(geoData,function(data) {
+    console.log(data);
     
     // Create a new choropleth layer
     happinessChoro = L.choropleth(data, {

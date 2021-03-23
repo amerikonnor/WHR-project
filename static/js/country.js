@@ -13,7 +13,7 @@ function optionChanged(id) {
 };
 
 function updateDemoInfo(country){
-    d3.csv("static/data/cleaned/combined_with_avgHappy.csv").then((data) => {
+    d3.csv("static/data/clean/combined_with_avgHappy.csv").then((data) => {
         var first_ID = data.filter(x => x.Country === country)[0];
     
     var happiness = [];
