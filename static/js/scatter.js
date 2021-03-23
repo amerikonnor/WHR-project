@@ -5,7 +5,7 @@ const margin = {
     top: 40,
     right: 40,
     bottom: 40,
-    left: 40
+    left: 80
 };
 
 // Calculate chart width and height
@@ -63,8 +63,8 @@ function renderTexts(txtGroup, newXScale, newYScale, chosenXAxis, chosenYAxis) {
 
   txtGroup.transition()
     .duration(1000)
-    .attr("x", d=>newXScale(d[chosenXAxis]))
-    .attr("y", d=>newYScale(d[chosenYAxis]))
+    .attr("x", d=>newXScale(d[chosenXAxis])-5)
+    .attr("y", d=>newYScale(d[chosenYAxis])+3)
   return txtGroup;
 }
 
@@ -114,30 +114,14 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup){
   if (chosenYaxis === "HappinessScore"){
     yLabel = "Happiness Score";
   }
-  // const toolTip = d3.tip()
-  //                   .attr("class", "d3-tip")
-  //                   .offset([80, -60])
-  //                   .html(function(d){
-  //                     return(`${d.country}<br>${xLabel}${d[chosenXaxis]}<br>${yLabel}${d[chosenYaxis]}`)
-  //                     })
-  
-  // circlesGroup.call(toolTip);
-  // circlesGroup.on("mouseover", function(data){
-  //   toolTip.show(data, this);
-  //   d3.select(this).style("stroke", "black");
-    
-  // })
-  // circlesGroup.on("mouseout", function(data, index){
-  //   toolTip.hide(data, this)
-  //   d3.select(this).style("stroke", "white");
-  // })
+ 
   return circlesGroup;
 }
 
 // Retrieve data from the CSV file and execute everything below
 
 d3.csv('static/data/clean/2020.csv',function(HappinessData){
-  console.log(chosenXaxis);
+ 
     
     // parse data to interger from string
     HappinessData.forEach(function(data){
@@ -149,7 +133,7 @@ d3.csv('static/data/clean/2020.csv',function(HappinessData){
         data.Trust = +data.Trust;
         data.Generosity = +data.Generosity;
     })
-    console.log(HappinessData)
+    
     // xLinearScale function after csv import
     let xLinearScale = xScale(HappinessData, chosenXaxis);
 
@@ -184,16 +168,33 @@ d3.csv('static/data/clean/2020.csv',function(HappinessData){
                             .attr("opacity", "1");
 
     let txtGroup = crlTxtGroup.append("text")
-                              .text(d=>d.abbr)
-                              .attr("x", d=>xLinearScale(d[chosenXaxis]))
+                              .text(d=>d.Code)
+                              .attr("x", d=>xLinearScale(d[chosenXaxis])-5)
                               .attr("y", d=>yLinearScale(d[chosenYaxis])+3)
                               .classed("stateText", true)
                               .style("font-size", "7px")
                               .style("font-weight", "800")
 
-     // Create group for  3 x- axis labels
+    //add a div for the tooltip
+    var toolTip = d3.select("body").append("div")
+      .attr("class","tooltip");
+    
+    crlTxtGroup.on("mouseover", function(d,i){
+      toolTip.style("display","block");
+      toolTip.html(`Country: <strong>${d.Country}</strong> <br>`+
+                    `Happiness Score: <strong>${(+d['Happiness Score']).toFixed(2)}</strong><br>`+
+                    `Factor Impact: <strong>${(+d[chosenXaxis]).toFixed(2)}</strong>`
+      ).style("left",d3.event.pageX + "px")
+      .style("top",d3.event.pageY + "px");
+    }).on("mouseout",function(){
+      toolTip.style("display","none")
+    })
+      
+    
+
      
-    // Create group for  3 y- axis labels
+     
+    
     const ylabelsGroup = chartGroup.append("g")
                                 .attr("transform", `translate(${0-margin.left/4}, ${height/2})`);
 
@@ -211,8 +212,8 @@ d3.csv('static/data/clean/2020.csv',function(HappinessData){
 	  const x_GenerosityLabel = d3.select('#generousButt').attr('value','Generosity');
 
    const y_HappinessLabel = ylabelsGroup.append("text")
-                                .attr("y", 0 - 20)
-                                .attr("x", 0)
+                                .attr("y", -40)
+                                .attr("x", -40)
                                 .attr("transform", "rotate(-90)")
                                 .attr("dy", "1em")
                                 .attr("value", "HappinessScore")
@@ -221,8 +222,7 @@ d3.csv('static/data/clean/2020.csv',function(HappinessData){
     
     
 
-     // updateToolTip function after csv import
-    //  circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup);
+    
 
     // x axis labels event listener
     d3.selectAll(".btn")
@@ -338,13 +338,14 @@ d3.csv('static/data/clean/2020.csv',function(HappinessData){
                 .attr('class','btn btn-primary');
 			       
             }
-          // update tooltip with new info after changing x-axis 
-          // circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup); 
-      }})
-// y axis labels event listener
+          //update the tool tips!
+            
 
-     // update tooltip with new info after changing y-axis 
-    //  circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup); 
+            
+      }})
+
+
+     
   
 })
 // })()
