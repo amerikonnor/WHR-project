@@ -451,6 +451,13 @@ function somethingCool(country){
     
         var layout1 = {
             title : `${first_ID.Country} Happiness`,
+            legend:{
+                orientation: 'h',
+                xanchor:"center",
+                yanchor:"top",
+                y:-0.3, //play with it
+                x:0.5   // play with it
+            },
             yaxis : {title: 'Happiness'},
             yaxis2: {
                 title: 'Impact of Factors',
