@@ -455,8 +455,8 @@ function somethingCool(country){
                 orientation: 'h',
                 xanchor:"center",
                 yanchor:"top",
-                y=-0.3,
-                x=0.5
+                y:-0.3, //play with it
+                x:0.5   // play with it
             },
             yaxis : {title: 'Happiness'},
             yaxis2: {
