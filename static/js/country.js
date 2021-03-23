@@ -117,7 +117,7 @@ function updateDemoInfo(country){
 function makeTheGraph(country){
     
     
-    d3.csv("static/data/cleaned/combined_with_avgHappy.csv").then((data) => {
+    d3.csv("static/data/clean/combined_with_avgHappy.csv").then((data) => {
         var first_ID = data.filter(x => x.Country === country)[0];
     
     var happiness = [];
@@ -177,7 +177,7 @@ function makeTheGraph(country){
 }
 //When going to initial html page, creates function so pages loads on first dropdown
 function init(country) {
-    d3.csv("static/data/cleaned/combined_with_avgHappy.csv").then((data) => {
+    d3.csv("static/data/clean/combined_with_avgHappy.csv").then((data) => {
         theGoodStuff = data;
         var names = data.map(x => x.Country)
         names.forEach(function(name) {
@@ -351,7 +351,7 @@ function checkBoxAction(box) {
 function somethingCool(country){
     console.log('made it here');
     
-    d3.csv("static/data/cleaned/combined_with_avgHappy.csv").then((data) => {
+    d3.csv("static/data/clean/combined_with_avgHappy.csv").then((data) => {
         var first_ID = data.filter(x => x.Country === country)[0];
     
         var happiness = [];
