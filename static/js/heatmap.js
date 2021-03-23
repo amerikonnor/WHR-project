@@ -28,10 +28,10 @@ function addSlider(map){
 
   sliderBox.onAdd = function() {
     
-    var sliderDiv = L.DomUtil.create("div", "info legend");
+    var sliderDiv = L.DomUtil.create("div", "sliderLegend");
     
 
-    var sliderInfo = '<p id="value-simple" style="text-align:center font-size:14px></p><div id="slider-simple"></div>';
+    var sliderInfo = '<p id="value-simple"></p><div id="slider-simple"></div>';
     sliderDiv.innerHTML = sliderInfo;
   
       
@@ -40,7 +40,8 @@ function addSlider(map){
     return sliderDiv;
   }
   sliderBox.addTo(map);
-  d3.select('p#value-simple').text(2015);
+  d3.select(".sliderLegend").attr('class','sliderLegend');
+  d3.select('p#value-simple').attr('value',2015);
 
   var sliderSimple = d3
   .sliderBottom()
@@ -52,7 +53,7 @@ function addSlider(map){
   .ticks(5)
   .default(2015)
   .on('onchange', val => {
-    d3.select('p#value-simple').text(val);
+    d3.select('p#value-simple').attr('value',val);
     makeChoros();
   });
 
@@ -73,10 +74,10 @@ function addSlider(map){
 
   // Grab data with d3
 function makeChoros(){
-
+  console.log('made choros');
   var sliderItem = d3.select('p#value-simple');
-  var dataset = sliderItem.text();
-
+  var dataset = sliderItem.attr('value');
+  console.log(dataset);
   switch(dataset){
     case "2015":
     var geoYear = "2015"
@@ -111,7 +112,7 @@ function makeChoros(){
   
 
   d3.json(geoData,function(data) {
-    console.log(data);
+    
     
     // Create a new choropleth layer
     happinessChoro = L.choropleth(data, {
@@ -138,6 +139,7 @@ function makeChoros(){
           else {
             layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Happiness Score:<br>" +
             'Not Measured');
+       }
       }
     }).addTo(myMap);
 
@@ -274,7 +276,7 @@ function makeChoros(){
       // Binding a pop-up to each layer
       onEachFeature: function(feature, layer) {
         if (typeof feature.properties["Perception of Government Corruption"] !== 'undefined'){
-        layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Perception of Government Corruption Impact:<br>" +
+        layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Perception of Government<br>Corruption Impact:<br>" +
           feature.properties["Perception of Government Corruption"]);
         }
         else {
@@ -312,29 +314,50 @@ function makeChoros(){
       }
     });
 
-    var baseMaps = {
-      "Happiness Score" : happinessChoro,
-      "GDP per Capita Impact" : wealthChoro,
-      "Freedom Impact" : freedomChoro,
-      "Social Support Impact" : familyChoro,
-      "Life Expectancy Impact" : healthChoro,
-      "Perception of Government Corruption Impact" : trustChoro,
-      "Generosity Impact" : generosityChoro
-    };
+    // var baseMaps = {
+    //   "Happiness Score" : happinessChoro,
+    //   "GDP per Capita Impact" : wealthChoro,
+    //   "Freedom Impact" : freedomChoro,
+    //   "Social Support Impact" : familyChoro,
+    //   "Life Expectancy Impact" : healthChoro,
+    //   "Perception of Government Corruption Impact" : trustChoro,
+    //   "Generosity Impact" : generosityChoro
+
+    // }
+    var baseMaps = [
+                      {
+                        groupName: "Layers",
+                        expanded: true,
+                        layers:{
+                                "Happiness Score" : happinessChoro,
+                                "GDP per Capita Impact" : wealthChoro,
+                                "Freedom Impact" : freedomChoro,
+                                "Social Support Impact" : familyChoro,
+                                "Life Expectancy Impact" : healthChoro,
+                                "Perception of Government Corruption Impact" : trustChoro,
+                                "Generosity Impact" : generosityChoro
+                        }
+                    }
+  ];
   
     //need an empty set for the layers option of L.map
     var overlayMaps = {};
 
+    var options = {
+      container_width : "300px",
+      container_maxHeight: "350px",
+    }
     
     d3.select('div.leaflet-top.leaflet-right').html('');
     
-  
     
+    var control = L.Control.styledLayerControl(baseMaps,overlayMaps,options);
+    control.addTo(myMap);
 
-    var layerControl = L.control.layers(baseMaps,overlayMaps,{
-      collasped: false
-    });
-    layerControl.addTo(myMap);
+    // var layerControl = L.control.layers(baseMaps,overlayMaps,{
+    //   collasped: false
+    // });
+    // layerControl.addTo(myMap);
     
     
   
@@ -344,13 +367,16 @@ function makeChoros(){
     var legend = L.control({ position: "bottomright" });
 
     //function that makes the legend
-    function makeLegend(layer){
+    function makeLegend(layerKey){
 
     //save the passed in active layer
-      var activeChoro = layer;
+      var activeChoro = baseMaps[0]['layers'][layerKey];
 
     //get the active layers title
-      var layerTitle = Object.keys(baseMaps).find(key => baseMaps[key] === activeChoro)
+      var layerTitle = layerKey;
+      if (layerKey === "Perception of Government Corruption Impact"){
+        layerTitle = "Perception of Gorvernment<br>Corruption Impact"
+      };
       
       //set up the legend
       legend.onAdd = function() {
@@ -374,8 +400,15 @@ function makeChoros(){
       // Adding legend to the map
       legend.addTo(myMap);
     };
-    makeLegend(happinessChoro);
+    makeLegend("Happiness Score");
 
+    d3.selectAll('.menu-item-radio').on('change',function(){
+      activeKey = d3.select(this).select('label').node().innerText;
+
+      
+      d3.select('div.leaflet-bottom.leaflet-right').html('<div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a></div>');
+      makeLegend(activeKey);
+    })
     //redraw legend stuff
     myMap.on('baselayerchange',e=>{
       d3.select('div.leaflet-bottom.leaflet-right').html('<div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a></div>');

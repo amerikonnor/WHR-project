@@ -1,11 +1,11 @@
-const svgWidth = 660;
+const svgWidth = 960;
 const svgHeight = 600;
 
 const margin = {
-    top: 20,
+    top: 40,
     right: 40,
-    bottom: 180,
-    left: 100
+    bottom: 40,
+    left: 40
 };
 
 // Calculate chart width and height
