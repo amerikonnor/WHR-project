@@ -23,11 +23,11 @@
     <div class='container'>
       <nav class="navbar navbar-expand-lg navbar-light bg-light" style='height:45px'>
         <a class="navbar-brand" href="index.html">World Happiness Report</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler collapse" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
     
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
                 
                 <li class="nav-item active">
@@ -44,8 +44,41 @@
 
 
     <!-- The div where we will inject our map -->
-    <div id="scatter"></div>
-
+    <div class='container'>
+      <div class='row justify-content-center'>
+        <div id="scatter"></div>
+      </div>
+      <div class ='row justify-content-center'>
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"></div>
+        <!-- <p class="bs-component"> -->
+          <div class='btn-group mr-2'  role="group" aria-label="First Group">
+            <button type='button' id="gdpButt" class='btn btn-primary'>GDP per Capita</button>
+          </div>
+          <div class='btn-group mr-2'  role="group" aria-label="Second Group"> 
+            <button type='button' id="freeButt" class='btn btn-warning'>Freedom</button> 
+          </div>
+          <div class='btn-group mr-2'  role="group" aria-label="Third Group">
+            <button type='button' id="familyButt" class='btn btn-warning'>Social Support</button> 
+          </div> 
+        </div>         
+        <!-- </p> -->
+      </div>
+      <div class ='row justify-content-center mt-3'>
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar2 with button groups"></div>
+        <!-- <p class="bs-component"> -->
+          <div class='btn-group mr-2' role="group" aria-label="Fourth Group">
+            <button type='button' id="healthButt" class='btn btn-warning'>Health</button>
+          </div>
+          <div class='btn-group mr-2' role="group" aria-label="Fifth Group"> 
+            <button type='button' id="trustButt" class='btn btn-warning'>Percept. of Gov't Corruption</button> 
+          </div>
+          <div class='btn-group mr-2' role="group" aria-label="Sixth Group">
+            <button type='button' id="generousButt" class='btn btn-warning'>Generosity</button> 
+          </div> 
+        </div>         
+        <!-- </p> -->
+      </div>
+    </div>
 
     <!-- d3 JavaScript -->
     <script src="https://d3js.org/d3.v4.min.js"></script>

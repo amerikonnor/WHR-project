@@ -6,7 +6,7 @@
   
   .active {
     font-weight: bold;
-    fill: #000;
+    fill: rgb(230, 82, 14);
     transition: fill 0.3s ease-out;
     text-anchor: left;
   }
@@ -23,3 +23,14 @@
     cursor: pointer;
   }
   
+  .axisWhite {
+    stroke: white;
+  }
+
+  .domain {
+    stroke: white;
+  }
+
+  .stateCircle {
+    fill: aquamarine
+  }
