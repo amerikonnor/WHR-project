@@ -162,7 +162,8 @@ function makeTheGraph(country){
 
 
     var layout1 = {
-        title : `${first_ID.Country} Happiness`
+        title : `${first_ID.Country} Happiness`,
+        showgrid: false
     };
 
     // Create bar chart
@@ -411,8 +412,40 @@ function somethingCool(country){
                 trace['yaxis'] = 'y2',
                 trace['name'] = 'Freedom'
                 graphData.push(trace)
-
             }
+            else if (box == 'health'){
+                trace['x'] = years
+                trace['y'] = health
+                trace['type'] = 'line'
+                trace['yaxis'] = 'y2',
+                trace['name'] = 'Healthy Life Expectancy'
+                graphData.push(trace)
+            }
+            else if (box == 'family'){
+                trace['x'] = years
+                trace['y'] = family
+                trace['type'] = 'line'
+                trace['yaxis'] = 'y2',
+                trace['name'] = 'Family'
+                graphData.push(trace)
+            }
+            else if (box == 'trust'){
+                trace['x'] = years
+                trace['y'] = corruption
+                trace['type'] = 'line'
+                trace['yaxis'] = 'y2',
+                trace['name'] = 'Perception Of Government Corruption'
+                graphData.push(trace)
+            }
+            else if (box == 'generosity'){
+                trace['x'] = years
+                trace['y'] = generosity
+                trace['type'] = 'line'
+                trace['yaxis'] = 'y2',
+                trace['name'] = 'Generosity'
+                graphData.push(trace)
+            }
+
         })
 
     
@@ -422,6 +455,7 @@ function somethingCool(country){
             yaxis2: {
                 title: 'Impact of Factors',
                 overlaying: 'y',
+                showgrid: false,
                 side: 'right'
             }
         };

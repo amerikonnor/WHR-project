@@ -24,6 +24,7 @@
 </head>
 
 <body>
+<<<<<<< HEAD
   <div class="container">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="index.html">World Happiness Report</a>
@@ -46,8 +47,29 @@
         
       </ul>
       
+=======
+  <div class='container'>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style='height:45px'>
+      <a class="navbar-brand" href="#">World Happiness Report</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+              
+              <li class="nav-item">
+                <a class="nav-link" href="scatter.html">Scatter Plot</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="country.html">Country Data</a>
+              </li>
+          </ul>
+        </div>
+      </nav>
+>>>>>>> 7037b7897d3c96c9c844ea705b974735c4a7adf9
     </div>
-  </nav>
+  
   
     <div class="row">
       <div id ="mainTitle" class="col-sm-12 col-md-12 col-lg-12 jumbotron text-center">
@@ -74,6 +96,22 @@
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault freedomCheckBox" onClick='checkBoxAction("freedom")'>
           <label class="form-check-label" for="flexSwitchCheck">Display Freedom Impact</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault healthCheckBox" onClick='checkBoxAction("health")'>
+          <label class="form-check-label" for="flexSwitchCheckDefault">Display Life Expectancy Impact</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault familyCheckBox" onClick='checkBoxAction("family")'>
+          <label class="form-check-label" for="flexSwitchCheckDefault">Display Family Impact</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault trustCheckBox" onClick='checkBoxAction("trust")'>
+          <label class="form-check-label" for="flexSwitchCheckDefault">Display Government Trust Impact</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault generosityCheckBox" onClick='checkBoxAction("generosity")'>
+          <label class="form-check-label" for="flexSwitchCheckDefault">Display Generosity Impact</label>
         </div>
       </div>
     </div>
