@@ -412,8 +412,40 @@ function somethingCool(country){
                 trace['yaxis'] = 'y2',
                 trace['name'] = 'Freedom'
                 graphData.push(trace)
-
             }
+            else if (box == 'health'){
+                trace['x'] = years
+                trace['y'] = health
+                trace['type'] = 'line'
+                trace['yaxis'] = 'y2',
+                trace['name'] = 'Healthy Life Expectancy'
+                graphData.push(trace)
+            }
+            else if (box == 'family'){
+                trace['x'] = years
+                trace['y'] = family
+                trace['type'] = 'line'
+                trace['yaxis'] = 'y2',
+                trace['name'] = 'Family'
+                graphData.push(trace)
+            }
+            else if (box == 'trust'){
+                trace['x'] = years
+                trace['y'] = corruption
+                trace['type'] = 'line'
+                trace['yaxis'] = 'y2',
+                trace['name'] = 'Perception Of Government Corruption'
+                graphData.push(trace)
+            }
+            else if (box == 'generosity'){
+                trace['x'] = years
+                trace['y'] = generosity
+                trace['type'] = 'line'
+                trace['yaxis'] = 'y2',
+                trace['name'] = 'Generosity'
+                graphData.push(trace)
+            }
+
         })
 
     
