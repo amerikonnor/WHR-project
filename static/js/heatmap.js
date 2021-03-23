@@ -31,7 +31,7 @@ function addSlider(map){
     var sliderDiv = L.DomUtil.create("div", "info legend");
     
 
-    var sliderInfo = '<p id="value-simple"></p><div id="slider-simple"></div>';
+    var sliderInfo = '<p id="value-simple" style="text-align:center font-size:14px></p><div id="slider-simple"></div>';
     sliderDiv.innerHTML = sliderInfo;
   
       
@@ -131,14 +131,47 @@ function makeChoros(){
       },
       // Binding a pop-up to each layer
       onEachFeature: function(feature, layer) {
-        layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Happiness Score:<br>" +
-          feature.properties["Happiness Score"]);
+        if (typeof feature.properties["Happiness Score"] !== 'undefined'){
+          layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Happiness Score:<br>" +
+            feature.properties["Happiness Scocre"]);
+          }
+          else {
+            layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Happiness Score:<br>" +
+            'Not Measured');
       }
     }).addTo(myMap);
 
     
     //creating another choro layer for the freedom impact score!
     //I want to make a loop that just creates them all!
+    wealthChoro = L.choropleth(data, {
+      // Define what  property in the features to use
+      valueProperty: "GDP per Capita",
+      // Set color scale
+      scale: ["#ffffb2", "#b10026"],
+      // Number of breaks in step range
+      steps: 10,
+      // q for quartile, e for equidistant, k for k-means
+      mode: "q",
+      style: {
+        // Border color
+        color: "#fff",
+        weight: 1,
+        fillOpacity: 0.8
+      },
+      // Binding a pop-up to each layer
+      onEachFeature: function(feature, layer) {
+        if (typeof feature.properties["GDP per Capita"] !== 'undefined'){
+        layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>GDP per Capita Impact:<br>" +
+          feature.properties["GDP per Capita"]);
+        }
+        else {
+          layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>GDP per Capita Impact:<br>" +
+          'Not Measured');
+        }
+      }
+    });
+
     freedomChoro = L.choropleth(data, {
       // Define what  property in the features to use
       valueProperty: "Freedom",
@@ -166,9 +199,127 @@ function makeChoros(){
         }
       }
     });
+
+    familyChoro = L.choropleth(data, {
+      // Define what  property in the features to use
+      valueProperty: "Family",
+      // Set color scale
+      scale: ["#ffffb2", "#b10026"],
+      // Number of breaks in step range
+      steps: 10,
+      // q for quartile, e for equidistant, k for k-means
+      mode: "q",
+      style: {
+        // Border color
+        color: "#fff",
+        weight: 1,
+        fillOpacity: 0.8
+      },
+      // Binding a pop-up to each layer
+      onEachFeature: function(feature, layer) {
+        if (typeof feature.properties["Family"] !== 'undefined'){
+        layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Social Support Impact:<br>" +
+          feature.properties["Family"]);
+        }
+        else {
+          layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Social Support Impact:<br>" +
+          'Not Measured');
+        }
+      }
+    });
+
+    healthChoro = L.choropleth(data, {
+      // Define what  property in the features to use
+      valueProperty: "Healthy Life Expectancy",
+      // Set color scale
+      scale: ["#ffffb2", "#b10026"],
+      // Number of breaks in step range
+      steps: 10,
+      // q for quartile, e for equidistant, k for k-means
+      mode: "q",
+      style: {
+        // Border color
+        color: "#fff",
+        weight: 1,
+        fillOpacity: 0.8
+      },
+      // Binding a pop-up to each layer
+      onEachFeature: function(feature, layer) {
+        if (typeof feature.properties["Healthy Life Expectancy"] !== 'undefined'){
+        layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Life Expectancy Impact:<br>" +
+          feature.properties["Health"]);
+        }
+        else {
+          layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Life Expectancy Impact:<br>" +
+          'Not Measured');
+        }
+      }
+    });
+
+    trustChoro = L.choropleth(data, {
+      // Define what  property in the features to use
+      valueProperty: "Perception of Government Corruption",
+      // Set color scale
+      scale: ["#ffffb2", "#b10026"],
+      // Number of breaks in step range
+      steps: 10,
+      // q for quartile, e for equidistant, k for k-means
+      mode: "q",
+      style: {
+        // Border color
+        color: "#fff",
+        weight: 1,
+        fillOpacity: 0.8
+      },
+      // Binding a pop-up to each layer
+      onEachFeature: function(feature, layer) {
+        if (typeof feature.properties["Perception of Government Corruption"] !== 'undefined'){
+        layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Perception of Government Corruption Impact:<br>" +
+          feature.properties["Perception of Government Corruption"]);
+        }
+        else {
+          layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Perception of Government Corruption Impact:<br>" +
+          'Not Measured');
+        }
+      }
+    });
+
+    generosityChoro = L.choropleth(data, {
+      // Define what  property in the features to use
+      valueProperty: "Generosity",
+      // Set color scale
+      scale: ["#ffffb2", "#b10026"],
+      // Number of breaks in step range
+      steps: 10,
+      // q for quartile, e for equidistant, k for k-means
+      mode: "q",
+      style: {
+        // Border color
+        color: "#fff",
+        weight: 1,
+        fillOpacity: 0.8
+      },
+      // Binding a pop-up to each layer
+      onEachFeature: function(feature, layer) {
+        if (typeof feature.properties["Generosity"] !== 'undefined'){
+        layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Generosity Impact:<br>" +
+          feature.properties["Generosity"]);
+        }
+        else {
+          layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Generosity Impact:<br>" +
+          'Not Measured');
+        }
+      }
+    });
+
     var baseMaps = {
       "Happiness Score" : happinessChoro,
-      "Freedom Impact" : freedomChoro
+      "GDP per Capita Impact" : wealthChoro,
+      "Freedom Impact" : freedomChoro,
+      "Social Support Impact" : familyChoro,
+      "Life Expectancy Impact" : healthChoro,
+      "Perception of Government Corruption Impact" : trustChoro,
+      "Generosity Impact" : generosityChoro
     };
   
     //need an empty set for the layers option of L.map
