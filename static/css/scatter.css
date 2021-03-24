@@ -8,13 +8,8 @@
     font-family: sans-serif;
     font-size: 20px;
     text-anchor: left;
-  }
-  
-  .active {
     font-weight: bold;
     fill: rgb(230, 82, 14);
-    transition: fill 0.3s ease-out;
-    text-anchor: left;
   }
   
   .inactive {
@@ -29,8 +24,10 @@
     cursor: pointer;
   }
   
+  
   .axisWhite {
     stroke: white;
+    font: 14px sans-serif;
   }
 
   .domain {
@@ -54,4 +51,13 @@
     opacity:1;
     background:white;
 
+  }
+  .axis text,
+  .slider text{
+    font-size:12px;
+
+  }
+  .parameter-value text{
+    color:rgb(230, 82, 14);
+    fill: rgb(230, 82, 14);
   }

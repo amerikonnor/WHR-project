@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>World Happiness Report</title>
+
+    <!-- Bootstrap Stuff -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.6.0/dist/superhero/bootstrap.min.css">
+
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href="static/css/about.css">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light style=height:45px">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">World Happiness Project</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="scatter.html">Scatter Plot</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="country.html">Country Data</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">About</a>
+              </li>
+          </ul>
+          
+        </div>
+      </div>
+    </nav>
+    
+    <div class='container mt-5'>
+      <div class="jumbotron">
+        <h2 class="display-3">About the Project</h2>
+        <p class="lead">This website was deployed as part of a group project for a Data Analysis Bootcamp. The project was focused on visualization on the web!
+          Each of of the pages was created using a different data visualization technique.
+          <ul>
+            <li>Home: The data is visualized using <a href="https://leafletjs.com/" target="_blank">Leaflet.js</a>, with the <a href="https://github.com/timwis/leaflet-choropleth" target='_blank'>Choropleth.js plugin</a>.</li>
+            <li>Scatter Plot: The plot is made using <a href="https://d3js.org/" target="_blank">d3.js</a> to draw everything, from the axis, labels, circles, and tooltips! The slider is created using <a href="https://github.com/johnwalley/d3-simple-slider" target="_blank">d3-simple-slider</a>.</li>
+            <li>Country Data: <a href="https://plotly.com/javascript/" target="_blank">Plotly.js</a> is used to make the plot. The table is created using the d3 methods .data(), .enter(), and .append()!</li>
+          </ul>
+        </p>
+        <hr class="my-4">
+        <div class="card text-white bg-secondary mb-3" >
+          <div class="card-header">About the Data - The World Happiness Report</div>
+          <div class="card-body">
+            <p class="card-text">
+              The data used for all of our visualzations was found on <a href="https://www.kaggle.com/mathurinache/world-happiness-report" target="_blank">Kaggle</a>.
+              It orignates with the <a href="https://worldhappiness.report/" target="_blank">World Happiness Report (WHR)</a>.
+              <br>
+              The data contains information on over 150 countries. In the project, we focused the Happiness Score for each country, as well as six explanatory factors from the WHR:<br>
+              <ul>
+                <li>GDP per Capita</li>
+                <li>Family/Social Support</li>
+                <li>Healthy Life Expectancy</li>
+                <li>Freedom to make Life Choices</li>
+                <li>Perception of Government Corruption</li>
+                <li>Generosity</li>
+              </ul><br>
+              The datapoint associated with each factor is a measurement to help explain how much of an impact that factor had on the Happiness Score for the country.
+
+              
+              <hr>
+              "The World Happiness Report is a publication of the Sustainable Development Solutions Network, powered by data from the Gallup World Poll and Lloyd’s Register Foundation, who provided access to the World Risk Poll."
+              "The Report is supported by The Ernesto Illy Foundation, illycaffè, Davines Group, The Blue Chip Foundation, The William, Jeff, and Jennifer Gross Family Foundation, The Happier Way Foundation, Indeed, and Unilever’s largest ice cream brand, Wall’s.
+                  The World Happiness Report was written by a group of independent experts acting in their personal capacities. Any views expressed in this report do not necessarily reflect the views of any organization, agency or program of the United Nations." (<a href="https://worldhappiness.report/#partners" target="_blank">worldhappiness.report</a>)
+            
+            </p>
+            <a class="btn btn-primary" href="https://worldhappiness.report/" target="_blank" role="button">Learn more</a>
+          </div>
+        </div>
+       
+      </div>
+
+      <div class='row'>
+        
+      </div>
+    </div>
+
+
+  </body>
+</html>
