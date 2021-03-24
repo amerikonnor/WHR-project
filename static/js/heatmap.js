@@ -129,7 +129,7 @@ function makeChoros(){
       onEachFeature: function(feature, layer) {
         if (typeof feature.properties["Happiness Score"] !== 'undefined'){
           layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Happiness Score:<br>" +
-            feature.properties["Happiness Scocre"]);
+            feature.properties["Happiness Score"]);
           }
           else {
             layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Happiness Score:<br>" +
