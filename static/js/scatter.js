@@ -58,7 +58,7 @@ function makeResponsive(){
   // function used for updating circles group with a transition to
   // new circles
   function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYAxis) {
-    console.log(chosenXAxis);
+    
     circlesGroup.transition()
       .duration(1000)
       .attr("cx", d => newXScale(d[chosenXAxis]))
@@ -203,12 +203,12 @@ function makeResponsive(){
             .on("click", function() {
             // get value of selection
             const value = d3.select(this).attr("value");
-            console.log(`${value} click`)
+           
             if (value !== chosenXaxis) {
 
                 // replaces chosenXAxis with value
                 chosenXaxis = value;
-                console.log(chosenXaxis)
+                
 
                 // functions here found above csv import
                 // updates x scale for new data

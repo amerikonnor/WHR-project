@@ -349,7 +349,7 @@ function checkBoxAction(box) {
 };
 
 function somethingCool(country){
-    console.log('made it here');
+   
     
     d3.csv("static/data/clean/combined_with_avgHappy.csv").then((data) => {
         var first_ID = data.filter(x => x.Country === country)[0];

@@ -69,10 +69,10 @@ function addSlider(map){
 
   // Grab data with d3
 function makeChoros(){
-  console.log('made choros');
+  
   var sliderItem = d3.select('p#value-simple');
   var dataset = sliderItem.attr('value');
-  console.log(dataset);
+  
   switch(dataset){
     case "2015":
     var geoYear = "2015"
@@ -129,7 +129,7 @@ function makeChoros(){
       onEachFeature: function(feature, layer) {
         if (typeof feature.properties["Happiness Score"] !== 'undefined'){
           layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Happiness Score:<br>" +
-            feature.properties["Happiness Score"]);
+            (+feature.properties["Happiness Score"]).toFixed(2));
           }
           else {
             layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Happiness Score:<br>" +
@@ -160,7 +160,7 @@ function makeChoros(){
       onEachFeature: function(feature, layer) {
         if (typeof feature.properties["GDP per Capita"] !== 'undefined'){
         layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>GDP per Capita Impact:<br>" +
-          feature.properties["GDP per Capita"]);
+          (+feature.properties["GDP per Capita"]).toFixed(2));
         }
         else {
           layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>GDP per Capita Impact:<br>" +
@@ -188,7 +188,7 @@ function makeChoros(){
       onEachFeature: function(feature, layer) {
         if (typeof feature.properties["Freedom"] !== 'undefined'){
         layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Freedom Impact:<br>" +
-          feature.properties["Freedom"]);
+          (+feature.properties["Freedom"]).toFixed(2));
         }
         else {
           layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Freedom Impact:<br>" +
@@ -216,7 +216,7 @@ function makeChoros(){
       onEachFeature: function(feature, layer) {
         if (typeof feature.properties["Family"] !== 'undefined'){
         layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Social Support Impact:<br>" +
-          feature.properties["Family"]);
+          (+feature.properties["Family"]).toFixed(2));
         }
         else {
           layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Social Support Impact:<br>" +
@@ -244,7 +244,7 @@ function makeChoros(){
       onEachFeature: function(feature, layer) {
         if (typeof feature.properties["Healthy Life Expectancy"] !== 'undefined'){
         layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Life Expectancy Impact:<br>" +
-          feature.properties["Health"]);
+          (+feature.properties["Healthy Life Expectancy"]).toFixed(2));
         }
         else {
           layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Life Expectancy Impact:<br>" +
@@ -272,7 +272,7 @@ function makeChoros(){
       onEachFeature: function(feature, layer) {
         if (typeof feature.properties["Perception of Government Corruption"] !== 'undefined'){
         layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Perception of Government<br>Corruption Impact:<br>" +
-          feature.properties["Perception of Government Corruption"]);
+          (+feature.properties["Perception of Government Corruption"]).toFixed(2));
         }
         else {
           layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Perception of Government Corruption Impact:<br>" +
@@ -300,7 +300,7 @@ function makeChoros(){
       onEachFeature: function(feature, layer) {
         if (typeof feature.properties["Generosity"] !== 'undefined'){
         layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Generosity Impact:<br>" +
-          feature.properties["Generosity"]);
+          (+feature.properties["Generosity"]).toFixed(2));
         }
         else {
           layer.bindPopup("Country: " + feature.properties.ADMIN + "<br>Generosity Impact:<br>" +
