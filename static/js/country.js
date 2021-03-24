@@ -450,7 +450,7 @@ function somethingCool(country){
 
     
         var layout1 = {
-            title : `${first_ID.Country} Happiness`,
+            title : `${first_ID.Country} Happiness Report`,
             legend:{
                 orientation: 'h',
                 xanchor:"center",
