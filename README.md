@@ -4,6 +4,7 @@ Our plan is to display the data using different visualizations to look at differ
 
 ## Homepage Choropleth
 The site homepage will use the Choropleth.js plugin to Leafleft to visualize the happiness score as a heatmap. This map has a slider to move through the different years of the data, as well as a layer control to change the heatmap to use the various factors that the World Happiness Report presents in their data set.
+![index](/static/images/index.PNG)
 
 ## Country Analysis/Visualization
 To further find connections within the data, we looked at it on a country by country level; with a page of the website dedicated to a line graph and table where a selected country's data can be displayed. The line graph plots the score over time for the country, with the options to also plot the other factors from the dataset. There is also a table containing all the data for the selected country.
